@@ -1,4 +1,5 @@
 import { TypesPokemonType } from '../App'
+import { ContentInfo, ContentPokemon, InfoType, InfoTypes } from '../styles/PokemonStyles'
 
 type PokemonType = {
   name: string;
@@ -8,23 +9,23 @@ type PokemonType = {
 
 export function Pokemon({ name, types, sprites }: PokemonType) {
   return (
-    <div className="content">
-      <div className="content__img">
+    <ContentPokemon>
+      <div>
         <img src={sprites} alt={`Imagem do pokemon ${name}`} />
       </div>
-      <div className="content__infos">
-        <h1>{name}</h1>
-        <div className="content__infos-types">
+      <ContentInfo>
+        <h1>{name.charAt(0).toUpperCase() + name.slice(1)}</h1>
+        <InfoTypes>
           <h2>Types: </h2>
-          <div className="content__infos-type">
+          <InfoType>
             {types.map(type => {
               return (
                 <p key={type.slot}>{type.type.name}</p>
               )
             })}
-          </div>
-        </div>
-      </div>
-    </div>
+          </InfoType>
+        </InfoTypes>
+      </ContentInfo>
+    </ContentPokemon>
   )
 }

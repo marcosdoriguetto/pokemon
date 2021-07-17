@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Pokemon } from './components/Pokemon';
 
 import axios from 'axios'
+import { Content } from './styles/PokemonStyles';
 
 export type TypesPokemonType = {
   slot: number;
@@ -51,14 +52,14 @@ export function App() {
   }
 
   return (
-    <div>
+    <Content>
       {
         pokemon.map(pokemon => {
           return (
-            <Pokemon name={pokemon.data.name} types={pokemon.data.types} sprites={pokemon.data.sprites.front_default} />
+            <Pokemon key={pokemon.data.id} name={pokemon.data.name} types={pokemon.data.types} sprites={pokemon.data.sprites.front_default} />
           )
         })
       }
-    </div>
+    </Content>
   )
 }
