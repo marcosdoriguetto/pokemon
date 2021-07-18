@@ -23,6 +23,11 @@ export const ContentInfo = styled.div`
   gap: 0.5rem;
 `
 
+export const ContentButton = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
 export const InfoTypes = styled.div`
   display: flex;
   align-items: center;

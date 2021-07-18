@@ -16,6 +16,7 @@ export const GlobalStyle = createGlobalStyle`
     font-size: 16px;
     font-family: sans-serif;
     background-color: #F3FBF4;
+    padding-block: 1rem;
   }
 
   h1 {
@@ -24,5 +25,14 @@ export const GlobalStyle = createGlobalStyle`
 
   h2 {
     font-size: 1.25rem;
+  }
+
+  button {
+    cursor: pointer;
+    outline: none;
+  }
+
+  button:disabled {
+    cursor: default;
   }
 `;

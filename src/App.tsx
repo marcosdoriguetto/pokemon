@@ -3,7 +3,8 @@ import { useState } from 'react';
 import { Pokemon } from './components/Pokemon';
 
 import axios from 'axios'
-import { Content } from './styles/PokemonStyles';
+import { Content, ContentButton } from './styles/PokemonStyles';
+import { Button } from './components/Button';
 
 export type TypesPokemonType = {
   slot: number;
@@ -29,18 +30,19 @@ export function App() {
   const [nextUrl, setNextUrl] = useState('');
   const [previousUrl, setPreviousUrl] = useState('');
 
-  const initialUrlApi = 'https://pokeapi.co/api/v2/pokemon'
+  const initialUrlApi = 'https://pokeapi.co/api/v2/pokemon?limit=25&offset=0'
 
   useEffect(() => {
-    async function fetchApi() {
-      const getAllPokemons = await axios.get(initialUrlApi);
-
-      setNextUrl(getAllPokemons.data.next)
-      setPreviousUrl(getAllPokemons.data.previous)
-      await savePokemons(getAllPokemons.data.results)
-    }
-    fetchApi()
+    fetchApi(initialUrlApi)
   }, [])
+
+  async function fetchApi(props: string) {
+    const getAllPokemons = await axios.get(props);
+
+    setNextUrl(getAllPokemons.data.next)
+    setPreviousUrl(getAllPokemons.data.previous)
+    await savePokemons(getAllPokemons.data.results)
+  }
 
   const savePokemons: ([]) => void = async previous => {
     let _pokemon: PokemonType[] = await Promise.all(previous.map(async pokemon => {
@@ -53,6 +55,10 @@ export function App() {
 
   return (
     <Content>
+      <ContentButton>
+        <Button next={false} disabled={previousUrl === null ? true : false} onClick={() => fetchApi(previousUrl)}>Previous</Button>
+        <Button disabled={nextUrl === null ? true : false} onClick={() => fetchApi(nextUrl)}>Next</Button>
+      </ContentButton>
       {
         pokemon.map(pokemon => {
           return (
