@@ -5,6 +5,13 @@ export const Content = styled.div`
   max-width: 18%;
   margin: 0 auto;
 `
+export const ContentInput = styled.input`
+  width: 100%;
+  padding: 0.5rem;
+  outline: none;
+  border: 2px solid var(--secondary);
+  border-radius: 4px;
+`
 
 export const ContentPokemon = styled.div`
   width: 100%;

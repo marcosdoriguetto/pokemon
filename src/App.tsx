@@ -2,9 +2,10 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { Pokemon } from './components/Pokemon';
 
-import axios from 'axios'
-import { Content, ContentButton } from './styles/PokemonStyles';
+import { Content, ContentButton, ContentInput } from './styles/PokemonStyles';
 import { Button } from './components/Button';
+
+import axios from 'axios'
 
 export type TypesPokemonType = {
   slot: number;
@@ -64,7 +65,7 @@ export function App() {
 
   return (
     <Content>
-      <input type="text" onChange={event => setValueSearch(event.target.value)} />
+      <ContentInput type="text" onChange={event => setValueSearch(event.target.value)} />
       {valueSearch === "" ? (
         <>
           {
