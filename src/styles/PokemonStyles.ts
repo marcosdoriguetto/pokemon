@@ -20,6 +20,12 @@ export const ContentButtonSort = styled.div`
   gap: 0.5rem;
 `
 
+export const ContentButton = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+`
+
 export const ContentPokemon = styled.div`
   width: 100%;
   display: flex;
@@ -35,11 +41,6 @@ export const ContentInfo = styled.div`
   justify-content: center;
   flex-direction: column;
   gap: 0.5rem;
-`
-
-export const ContentButton = styled.div`
-  display: flex;
-  justify-content: space-between;
 `
 
 export const InfoTypes = styled.div`

@@ -7,11 +7,13 @@ type BackgroundProps = {
 export const ButtonPage = styled.button<BackgroundProps>`
   width: 45%;
   padding-block: 0.5rem;
+  border-width: 1px;
+  border-radius: 5px;
+
   &:not(:disabled){
     border: 2px solid var(--secondary);
     background-color: transparent;
     color: var(--secondary);
-    border-radius: 5px;
     transition: filter 0.2s;
 
    ${props => props.next && css`
@@ -25,8 +27,8 @@ export const ButtonPage = styled.button<BackgroundProps>`
 `
 
 export const ButtonSort = styled.button`
-  padding: 0.2rem 0.2rem 0.1rem 0.2rem;
-  border: 1px solid var(--textColor);
+  padding: 4px 4px 2px 4px;
+  border: 1px solid #6666;
   border-radius: 3px;
   transition: 0.15s ease-in;
 
@@ -34,9 +36,13 @@ export const ButtonSort = styled.button`
     width: 22px;
     height: 22px;
   }
+  
+  &:not(:disabled) {
+    border-color: var(--textColor);
 
-  &.disabled {
-    background-color: white;
-    border: 1px solid var(--secondary);
+    &.disabled {
+      background-color: white;
+      border-color: var(--secondary);
+    }
   }
 `
