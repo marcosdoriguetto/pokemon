@@ -1,12 +1,13 @@
 import { ButtonHTMLAttributes } from 'react'
-import { ButtonPage } from '../styles/ButtonStyle'
+import { ButtonPage, ButtonSort } from '../styles/ButtonStyle'
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  next?: boolean
+  sort?: boolean;
+  next?: boolean;
 }
 
 export function Button({ ...props }: ButtonProps) {
   return (
-    <ButtonPage next {...props} />
+    props.sort ? <ButtonSort {...props} /> : <ButtonPage next {...props} />
   )
 }

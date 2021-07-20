@@ -3,7 +3,9 @@ import { createGlobalStyle } from "styled-components";
 export const GlobalStyle = createGlobalStyle`
   :root {
     --primary: #000000;
-    --secondary: #F01E1F;
+    --secondary: #1549D5;
+    --background: #EEF1F7;
+    --textColor: #091536;
   }
 
   * {
@@ -15,8 +17,9 @@ export const GlobalStyle = createGlobalStyle`
   body {
     font-size: 16px;
     font-family: sans-serif;
-    background-color: #F3FBF4;
+    background-color: #EEF1F7;
     padding-block: 1rem;
+    color: #091536;
   }
 
   h1 {

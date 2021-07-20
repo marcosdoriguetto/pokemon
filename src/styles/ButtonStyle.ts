@@ -16,16 +16,27 @@ export const ButtonPage = styled.button<BackgroundProps>`
 
    ${props => props.next && css`
     background-color: var(--secondary);
-    color: #F3FBF4;
+    color: white;
     `}
     &:hover {
-    filter: opacity(0.6);
+    filter: opacity(0.85);
     }
+  }
+`
 
-    &.disabled {
-      border: 1px solid #999999;
-      background-color: #cccccc;
-      color: #666666;
-    }
+export const ButtonSort = styled.button`
+  padding: 0.2rem 0.2rem 0.1rem 0.2rem;
+  border: 1px solid var(--textColor);
+  border-radius: 3px;
+  transition: 0.15s ease-in;
+
+  img {
+    width: 22px;
+    height: 22px;
+  }
+
+  &.disabled {
+    background-color: white;
+    border: 1px solid var(--secondary);
   }
 `

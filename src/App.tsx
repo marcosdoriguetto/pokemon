@@ -2,8 +2,11 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { Pokemon } from './components/Pokemon';
 
-import { Content, ContentButton, ContentInput } from './styles/PokemonStyles';
+import { Content, ContentButton, ContentButtonSort, ContentInput } from './styles/PokemonStyles';
 import { Button } from './components/Button';
+
+import AlphabeticalSort from './images/alphabetical-sort.svg'
+import AlphabeticalSortReverse from './images/alphabetical-sort-reverse.svg'
 
 import axios from 'axios'
 
@@ -88,15 +91,26 @@ export function App() {
   return (
     <Content>
       <ContentInput type="text" onChange={event => setValueSearch(event.target.value)} />
-      <Button className={!sort ? '' : 'disabled'} onClick={() => {
-        setSort(!sort)
-        setSortReverse(false)
-      }}>Sort</Button>
+      <ContentButtonSort>
+        <Button
+          sort
+          disabled={valueSearch.trim() !== ''}
+          className={!sort ? '' : 'disabled'}
+          onClick={() => {
+            setSort(!sort)
+            setSortReverse(false)
+          }}><img src={AlphabeticalSort} alt="Ordem alfabética" /></Button>
 
-      <Button className={!sortReverse ? '' : 'disabled'} onClick={() => {
-        setSortReverse(!sortReverse)
-        setSort(false)
-      }}>Reverse</Button>
+        <Button
+          sort
+          disabled={valueSearch.trim() !== ''}
+          className={!sortReverse ? '' : 'disabled'}
+          onClick={() => {
+            setSortReverse(!sortReverse)
+            setSort(false)
+          }}><img src={AlphabeticalSortReverse} alt="Ordem alfabética reversa" /></Button>
+      </ContentButtonSort>
+
       {valueSearch.trim() === "" ? (
         <>
           {
@@ -121,7 +135,11 @@ export function App() {
             )
           }
           <ContentButton>
-            <Button next={false} disabled={previousUrl === null ? true : false} onClick={() => fetchApi(previousUrl)}>Previous</Button>
+            <Button
+              next={false}
+              disabled={previousUrl === null ? true : false}
+              onClick={() => fetchApi(previousUrl)}
+            >Previous</Button>
             <Button disabled={nextUrl === null ? true : false} onClick={() => fetchApi(nextUrl)}>Next</Button>
           </ContentButton>
         </>

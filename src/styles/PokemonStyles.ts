@@ -11,6 +11,13 @@ export const ContentInput = styled.input`
   outline: none;
   border: 2px solid var(--secondary);
   border-radius: 4px;
+  margin-bottom: 0.3rem;
+`
+
+export const ContentButtonSort = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
 `
 
 export const ContentPokemon = styled.div`
