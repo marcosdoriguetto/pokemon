@@ -28,10 +28,14 @@ type PokemonType = {
 
 export function App() {
   const [pokemon, setPokemon] = useState<PokemonType[]>([]);
+  const [pokemonsSort, setPokemonsSort] = useState<PokemonType[]>([])
+  const [pokemonsSortReverse, setPokemonsSortReverse] = useState<PokemonType[]>([])
   const [allPokemons, setAllPokemons] = useState<PokemonType[]>([]);
   const [nextUrl, setNextUrl] = useState('');
   const [previousUrl, setPreviousUrl] = useState('');
   const [valueSearch, setValueSearch] = useState('');
+  const [sort, setSort] = useState(false)
+  const [sortReverse, setSortReverse] = useState(false)
 
   const initialUrlApi = 'https://pokeapi.co/api/v2/pokemon?limit=25&offset=0'
   const initialUrlApiGetAllPokemons = 'https://pokeapi.co/api/v2/pokemon?limit=1118&offset=0'
@@ -44,7 +48,7 @@ export function App() {
     }
     fetchApiAllPokemons()
     fetchApi(initialUrlApi)
-  }, [])
+  }, []);
 
   async function fetchApi(props: string) {
     const getAllPokemonsPage = await axios.get(props);
@@ -60,20 +64,61 @@ export function App() {
       return pokemonRegister
     }))
 
-    actionType === 'all' ? setAllPokemons(_pokemon) : setPokemon(_pokemon)
+    if (actionType === '') {
+      setPokemon(_pokemon)
+      setPokemonsSort(pokemonSort(_pokemon))
+      setPokemonsSortReverse(pokemonSort(_pokemon).reverse())
+    } else if (actionType === 'all') {
+      setAllPokemons(_pokemon)
+    }
+  }
+
+  function compareStrings(a: string, b: string) {
+    return (a < b) ? -1 : (a > b) ? 1 : 0;
+  }
+
+  function pokemonSort(pokemons: PokemonType[]) {
+    let _pokemons = pokemons.slice().sort(function (a, b) {
+      return compareStrings(a.data.name, b.data.name)
+    })
+
+    return _pokemons
   }
 
   return (
     <Content>
       <ContentInput type="text" onChange={event => setValueSearch(event.target.value)} />
-      {valueSearch === "" ? (
+      <Button className={!sort ? '' : 'disabled'} onClick={() => {
+        setSort(!sort)
+        setSortReverse(false)
+      }}>Sort</Button>
+
+      <Button className={!sortReverse ? '' : 'disabled'} onClick={() => {
+        setSortReverse(!sortReverse)
+        setSort(false)
+      }}>Reverse</Button>
+      {valueSearch.trim() === "" ? (
         <>
           {
-            pokemon.map(pokemon => {
-              return (
-                <Pokemon key={pokemon.data.id} name={pokemon.data.name} types={pokemon.data.types} sprites={pokemon.data.sprites.front_default} />
-              )
-            })
+            sort ? (
+              pokemonsSort.map(pokemon => {
+                return (
+                  <Pokemon key={pokemon.data.id} name={pokemon.data.name} types={pokemon.data.types} sprites={pokemon.data.sprites.front_default} />
+                )
+              })
+            ) : sortReverse ? (
+              pokemonsSortReverse.map(pokemon => {
+                return (
+                  <Pokemon key={pokemon.data.id} name={pokemon.data.name} types={pokemon.data.types} sprites={pokemon.data.sprites.front_default} />
+                )
+              })
+            ) : (
+              pokemon.map(pokemon => {
+                return (
+                  <Pokemon key={pokemon.data.id} name={pokemon.data.name} types={pokemon.data.types} sprites={pokemon.data.sprites.front_default} />
+                )
+              })
+            )
           }
           <ContentButton>
             <Button next={false} disabled={previousUrl === null ? true : false} onClick={() => fetchApi(previousUrl)}>Previous</Button>
