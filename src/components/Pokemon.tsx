@@ -20,7 +20,7 @@ export function Pokemon({ name, types, sprites }: PokemonType) {
           <InfoType>
             {types.map(type => {
               return (
-                <p key={type.slot}>{type.type.name}</p>
+                <img key={type.slot} src={`types/${type.type.name}.png`} alt={type.type.name} />
               )
             })}
           </InfoType>

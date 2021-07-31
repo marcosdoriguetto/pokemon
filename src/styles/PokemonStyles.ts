@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Content = styled.div`
-  min-width: 300px;
+  min-width: 350px;
   max-width: 18%;
   margin: 0 auto;
 `
@@ -14,10 +14,16 @@ export const ContentInput = styled.input`
   margin-bottom: 0.3rem;
 `
 
+export const ContentSort = styled.div`
+  display: flex;
+  
+`
+
 export const ContentButtonSort = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: 0.5rem;
+  flex: 1;
 `
 
 export const ContentButton = styled.div`
@@ -46,6 +52,12 @@ export const ContentInfo = styled.div`
 export const InfoTypes = styled.div`
   display: flex;
   align-items: center;
+  gap: 10px;
+
+  img {
+    width: 24px;
+    height: 24px;
+  }
 `
 
 export const InfoType = styled.div`
@@ -53,4 +65,14 @@ export const InfoType = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 10px;
+`
+
+export const ContentTypesOrganization = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  > :nth-child(1) {
+    flex: 3;
+  }
 `
