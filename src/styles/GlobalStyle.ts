@@ -16,10 +16,14 @@ export const GlobalStyle = createGlobalStyle`
 
   body {
     font-size: 16px;
-    font-family: sans-serif;
+    font-family: 'Inter', sans-serif;
     background-color: #EEF1F7;
     padding-block: 1rem;
     color: #091536;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Lexend', sans-serif;
   }
 
   h1 {

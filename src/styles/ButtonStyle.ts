@@ -5,7 +5,7 @@ type BackgroundProps = {
 }
 
 export const ButtonPage = styled.button<BackgroundProps>`
-  width: 45%;
+  width: 10%;
   padding-block: 0.5rem;
   border-width: 1px;
   border-radius: 5px;
@@ -24,18 +24,27 @@ export const ButtonPage = styled.button<BackgroundProps>`
     filter: opacity(0.85);
     }
   }
+
+  @media(max-width: 1100px) {
+    width: 20%;
+  }
+
+  @media(max-width: 540px) {
+    width: 25%;
+  }
 `
 
 export const ButtonSort = styled.button`
-  padding: 4px 6px 2px 6px;
+  width: 40px;
+  padding: 0 8px 0 5px;
   border: 1px solid #6666;
   border-radius: 3px;
   transition: 0.15s ease-in;
   max-height: 38px;
 
   img {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
   }
   
   &:not(:disabled) {

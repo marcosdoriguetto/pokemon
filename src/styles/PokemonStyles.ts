@@ -1,22 +1,57 @@
 import styled from "styled-components";
 
 export const Content = styled.div`
-  min-width: 350px;
-  max-width: 18%;
+  width: 70vw;
   margin: 0 auto;
+
+  @media(max-width: 480px) {
+    width: 85vw;
+  }
+
+  @media(max-width: 310px) {
+    width: 90vw;
+  }
+
+  @media(max-width: 290px) {
+    width: 94vw;
+  }
 `
+
+export const ContentCard = styled.div`
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  padding-top: 1rem;
+
+  @media(max-width: 1330px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media(max-width: 1020px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media(max-width: 710px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media(max-width: 390px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+`
+
 export const ContentInput = styled.input`
   width: 100%;
   padding: 0.5rem;
   outline: none;
   border: 2px solid var(--secondary);
   border-radius: 4px;
-  margin-bottom: 0.3rem;
 `
 
 export const ContentSort = styled.div`
-  display: flex;
-  
+  display: grid;
+  grid-template-columns: 1fr 24fr 1fr;
+  gap: 10px;
 `
 
 export const ContentButtonSort = styled.div`
@@ -34,12 +69,18 @@ export const ContentButton = styled.div`
 
 export const ContentPokemon = styled.div`
   width: 100%;
+  height: 220px;
   display: flex;
-  align-items: center;  
-  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   background-color: #ffff;
   border-radius: 5px;
-  margin: 0.75rem 0;
+  padding-inline: 10px;
+
+  h1 {
+    text-align: center;
+  }
 `
 
 export const ContentInfo = styled.div`
@@ -52,11 +93,12 @@ export const ContentInfo = styled.div`
 export const InfoTypes = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
 
   img {
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
   }
 `
 
@@ -75,4 +117,9 @@ export const ContentTypesOrganization = styled.div`
   > :nth-child(1) {
     flex: 3;
   }
+`
+
+export const ImagePokemon = styled.img`
+  width: 96px;
+  height: 96px;
 `
