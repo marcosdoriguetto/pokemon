@@ -48,46 +48,36 @@ export function App() {
   const [allPokemons, setAllPokemons] = useState<PokemonType[]>([]);
   const [pokemonType, setPokemonType] = useState<TypePokemon[]>([]);
   const [typePokemon, setTypePokemon] = useState<TypePokemonBoxes[]>([]);
-  const [count, setCount] = useState(0)
+
 
   const [nextUrl, setNextUrl] = useState('');
   const [previousUrl, setPreviousUrl] = useState('');
 
   const [valueSearch, setValueSearch] = useState('');
 
+  const [loading, setLoading] = useState(true);
   const [sort, setSort] = useState(false);
   const [sortReverse, setSortReverse] = useState(false);
   const [sortType, setSortType] = useState(false);
+  const [count, setCount] = useState(0)
 
   const initialUrlApi = 'https://pokeapi.co/api/v2/pokemon?limit=25&offset=0'
   const initialUrlApiGetAllPokemons = 'https://pokeapi.co/api/v2/pokemon?limit=1118&offset=0'
   const initialPokemonTypes = 'https://pokeapi.co/api/v2/type/'
 
   useEffect(() => {
-    async function fetchApiAllPokemons() {
-      const getAllPokemons = await axios.get(initialUrlApiGetAllPokemons);
+    async function fetchApi() {
+      let getPokemonsPage = await axios.get(initialUrlApi);
+      let getAllTypesPokemons = await axios.get(initialPokemonTypes);
 
-      await savePokemons(getAllPokemons.data.results, 'all')
-    }
-
-    async function fetchApiTypesPokemons() {
-      const getAllTypesPokemons = await axios.get(initialPokemonTypes);
-
+      setNextUrl(getPokemonsPage.data.next)
+      setPreviousUrl(getPokemonsPage.data.previous)
+      await savePokemons(getPokemonsPage.data.results, '')
       await savePokemons(getAllTypesPokemons.data.results, 'types')
+      setLoading(false)
     }
-
-    fetchApiAllPokemons()
-    fetchApiTypesPokemons()
-    fetchApi(initialUrlApi)  // eslint-disable-next-line
+    fetchApi()
   }, []);
-
-  const fetchApi = async (props: string) => {
-    const getAllPokemonsPage = await axios.get(props);
-
-    setNextUrl(getAllPokemonsPage.data.next)
-    setPreviousUrl(getAllPokemonsPage.data.previous)
-    await savePokemons(getAllPokemonsPage.data.results, '')
-  }
 
   async function savePokemons(previous: [{ url: string }], actionType: String) {
     let _pokemon: PokemonType[] = await Promise.all(previous.map(async pokemon => {
@@ -108,6 +98,33 @@ export function App() {
       }))
 
       setPokemonType(_pokemon)
+    }
+  }
+
+  const nextPage = async () => {
+    setLoading(true)
+    let pokemonsNextPage = await axios.get(nextUrl)
+    await savePokemons(pokemonsNextPage.data.results, '')
+    setNextUrl(pokemonsNextPage.data.next)
+    setPreviousUrl(pokemonsNextPage.data.previous)
+    setLoading(false)
+  }
+
+  const prevPage = async () => {
+    setLoading(true)
+    let pokemonsNextPage = await axios.get(previousUrl)
+    await savePokemons(pokemonsNextPage.data.results, '')
+    setNextUrl(pokemonsNextPage.data.next)
+    setPreviousUrl(pokemonsNextPage.data.previous)
+    setLoading(false)
+  }
+
+  const loadAllPokemons = async () => {
+    if (allPokemons.length === 0) {
+      setLoading(true)
+      let getAllPokemons = await axios.get(initialUrlApiGetAllPokemons)
+      await savePokemons(getAllPokemons.data.results, 'all')
+      setLoading(false)
     }
   }
 
@@ -161,7 +178,7 @@ export function App() {
       </ContentSort>
 
       <ContentCard>
-        {valueSearch.trim() === "" ? (
+        {!loading ? valueSearch.trim() === "" ? (
           <>
             {
               sort ? (
@@ -177,6 +194,7 @@ export function App() {
                   )
                 })
               ) : sortType ? (
+                loadAllPokemons(),
                 allPokemons.filter(value => {
                   const typesPokemon = typePokemon.map(type => {
                     return type.value
@@ -216,6 +234,7 @@ export function App() {
             }
           </>
         ) : (
+          loadAllPokemons(),
           allPokemons.filter(value => {
             if (value.data.name.toLowerCase().includes(valueSearch.toLowerCase())) {
               return value
@@ -227,7 +246,7 @@ export function App() {
             )
           })
         )
-        }
+          : <p>Loading...</p>}
       </ContentCard>
       {
         !sortType && valueSearch.trim() === "" && (
@@ -235,12 +254,12 @@ export function App() {
             <Button
               next={false}
               disabled={previousUrl === null ? true : false}
-              onClick={() => fetchApi(previousUrl)}
+              onClick={() => prevPage()}
             >Previous</Button>
-            <Button disabled={nextUrl === null ? true : false} onClick={() => fetchApi(nextUrl)}>Next</Button>
+            <Button disabled={nextUrl === null ? true : false} onClick={() => nextPage()}>Next</Button>
           </ContentButton>
         )
       }
-    </Content>
+    </Content >
   )
 }
