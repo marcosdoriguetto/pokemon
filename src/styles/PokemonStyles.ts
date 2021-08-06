@@ -4,11 +4,11 @@ export const Content = styled.div`
   width: 70vw;
   margin: 0 auto;
 
-  @media(max-width: 480px) {
+  @media(max-width: 710px) {
     width: 85vw;
   }
 
-  @media(max-width: 310px) {
+  @media(max-width: 320px) {
     width: 90vw;
   }
 
@@ -49,9 +49,22 @@ export const ContentInput = styled.input`
 `
 
 export const ContentSort = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 24fr 1fr;
+  display: flex;
   gap: 10px;
+
+  @media(max-width: 470px) {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+
+    input {
+      grid-column-start: 1;
+      grid-column-end: 5;
+    }
+
+    > :nth-child(1) {
+      grid-row-start: 2;
+    }
+  }
 `
 
 export const ContentButtonSort = styled.div`

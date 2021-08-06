@@ -36,7 +36,7 @@ export const ButtonPage = styled.button<BackgroundProps>`
 
 export const ButtonSort = styled.button`
   width: 40px;
-  padding: 0 8px 0 5px;
+  padding-inline: 8px;
   border: 1px solid #6666;
   border-radius: 3px;
   transition: 0.15s ease-in;

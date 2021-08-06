@@ -10,7 +10,7 @@ import AlphabeticalSortReverse from './images/alphabetical-sort-reverse.svg'
 
 import axios from 'axios'
 
-export type TypesPokemonType = {
+export type TypePokemonTypes = {
   slot: number;
   type: {
     name: string;
@@ -34,7 +34,7 @@ type PokemonType = {
   data: {
     id: number;
     name: string;
-    types: TypesPokemonType[];
+    types: TypePokemonTypes[];
     sprites: {
       front_default: string;
     }
@@ -49,7 +49,6 @@ export function App() {
   const [pokemonType, setPokemonType] = useState<TypePokemon[]>([]);
   const [typePokemon, setTypePokemon] = useState<TypePokemonBoxes[]>([]);
 
-
   const [nextUrl, setNextUrl] = useState('');
   const [previousUrl, setPreviousUrl] = useState('');
 
@@ -59,7 +58,7 @@ export function App() {
   const [sort, setSort] = useState(false);
   const [sortReverse, setSortReverse] = useState(false);
   const [sortType, setSortType] = useState(false);
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   const initialUrlApi = 'https://pokeapi.co/api/v2/pokemon?limit=25&offset=0'
   const initialUrlApiGetAllPokemons = 'https://pokeapi.co/api/v2/pokemon?limit=1118&offset=0'
@@ -161,15 +160,15 @@ export function App() {
     <Content>
       <ContentSort>
         <ReactMultiSelectCheckboxes onChange={onChange} placeholderButtonLabel="Selecione o(s) tipo(s)" options={typesPokemons} />
-        <ContentInput placeholder="Digite o nome do pokemon" type="text" onChange={event => setValueSearch(event.target.value)} />
+        <ContentInput placeholder="Search..." type="text" onChange={event => setValueSearch(event.target.value)} />
         <Button
           sort
-          disabled={valueSearch.trim() !== '' || sortType}
+          disabled={valueSearch.trim().length > 0 || sortType}
           className={!sort && !sortReverse ? '' : 'disabled'}
           onClick={() => {
-            setCount(count + 1)
-            setSort(!sort)
-            setSortReverse(sort)
+            setCount(count + 1);
+            setSort(!sort);
+            setSortReverse(sort);
             if (count % 3 === 0) {
               setSort(false)
               setSortReverse(false)
@@ -178,7 +177,7 @@ export function App() {
       </ContentSort>
 
       <ContentCard>
-        {!loading ? valueSearch.trim() === "" ? (
+        {!loading ? valueSearch.trim().length === 0 ? (
           <>
             {
               sort ? (
@@ -249,7 +248,7 @@ export function App() {
           : <p>Loading...</p>}
       </ContentCard>
       {
-        !sortType && valueSearch.trim() === "" && (
+        !sortType && valueSearch.trim().length === 0 && (
           <ContentButton>
             <Button
               next={false}

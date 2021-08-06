@@ -1,9 +1,9 @@
-import { TypesPokemonType } from '../App'
+import { TypePokemonTypes } from '../App'
 import { ContentInfo, ContentPokemon, ImagePokemon, InfoType, InfoTypes } from '../styles/PokemonStyles'
 
 type PokemonType = {
   name: string;
-  types: TypesPokemonType[];
+  types: TypePokemonTypes[];
   sprites: string;
 }
 
