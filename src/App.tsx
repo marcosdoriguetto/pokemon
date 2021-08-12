@@ -58,7 +58,8 @@ export function App() {
   const [sort, setSort] = useState(false);
   const [sortReverse, setSortReverse] = useState(false);
   const [sortType, setSortType] = useState(false);
-  const [count, setCount] = useState(0);
+  const [buttonState, setButtonState] = useState(false);
+  const [count, setCount] = useState(1);
 
   const initialUrlApi = 'https://pokeapi.co/api/v2/pokemon?limit=25&offset=0'
   const initialUrlApiGetAllPokemons = 'https://pokeapi.co/api/v2/pokemon?limit=1118&offset=0'
@@ -166,8 +167,8 @@ export function App() {
           disabled={valueSearch.trim().length > 0 || sortType}
           className={!sort && !sortReverse ? '' : 'disabled'}
           onClick={() => {
-            setCount(count + 1);
             setSort(!sort);
+            setCount(count + 1);
             setSortReverse(sort);
             if (count % 3 === 0) {
               setSort(false)
@@ -177,7 +178,7 @@ export function App() {
       </ContentSort>
 
       <ContentCard>
-        {!loading ? valueSearch.trim().length === 0 ? (
+        {!loading ? valueSearch.trim().length === 0 && !buttonState ? (
           <>
             {
               sort ? (
@@ -233,7 +234,6 @@ export function App() {
             }
           </>
         ) : (
-          loadAllPokemons(),
           allPokemons.filter(value => {
             if (value.data.name.toLowerCase().includes(valueSearch.toLowerCase())) {
               return value

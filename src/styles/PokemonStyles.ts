@@ -1,4 +1,8 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+
+type BackgroundProps = {
+  type: string;
+}
 
 export const Content = styled.div`
   width: 70vw;
@@ -80,7 +84,7 @@ export const ContentButton = styled.div`
   margin-top: 0.5rem;
 `
 
-export const ContentPokemon = styled.div`
+export const ContentPokemon = styled.div<BackgroundProps>`
   width: 100%;
   height: 220px;
   display: flex;
@@ -94,6 +98,10 @@ export const ContentPokemon = styled.div`
   h1 {
     text-align: center;
   }
+
+  ${props => props.type && css`
+    background-color: var(--${props.type});
+    `}
 `
 
 export const ContentInfo = styled.div`

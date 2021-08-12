@@ -9,7 +9,7 @@ type PokemonType = {
 
 export function Pokemon({ name, types, sprites }: PokemonType) {
   return (
-    <ContentPokemon>
+    <ContentPokemon type={types[0].type.name}>
       <div>
         <ImagePokemon loading="lazy" src={sprites} alt={`Imagem do pokemon ${name}`} />
       </div>
