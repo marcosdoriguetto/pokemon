@@ -1,4 +1,5 @@
-import { TypePokemonTypes } from '../App'
+
+import { TypePokemonTypes } from '../@types/pokemon'
 import { ContentInfo, ContentPokemon, ImagePokemon, InfoType, InfoTypes } from '../styles/PokemonStyles'
 
 type PokemonType = {

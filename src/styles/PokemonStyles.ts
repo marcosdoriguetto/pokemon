@@ -44,12 +44,30 @@ export const ContentCard = styled.div`
   }
 `
 
-export const ContentInput = styled.input`
+export const ContentInput = styled.form`
   width: 100%;
-  padding: 0.5rem;
-  outline: none;
-  border: 2px solid var(--secondary);
-  border-radius: 4px;
+
+  input {
+    width: calc(100% - 36px);
+    padding: 0.6rem;
+    outline: none;
+    border: 2px solid var(--secondary);
+    border-radius: 4px 0 0 4px;
+  }
+
+  button {
+    border-radius: 0 4px 4px 0;
+    padding-block: 5px;
+    width: 36px;
+    position: absolute;
+  }
+`
+
+export const ContentInputImage = styled.img`
+  display: flex;
+  margin: 0 auto;
+  width: 24px;
+  height: 24px;
 `
 
 export const ContentSort = styled.div`

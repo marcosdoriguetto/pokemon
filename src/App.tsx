@@ -1,50 +1,24 @@
-import { useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
+import axios from 'axios'
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
-import { Pokemon } from './components/Pokemon';
 
-import { Content, ContentButton, ContentCard, ContentInput, ContentSort } from './styles/PokemonStyles';
 import { Button } from './components/Button';
+import { PokemonSort } from './components/PokemonSort';
+import { PokemonSortReverse } from './components/PokemonSortReverse';
 
 import AlphabeticalSort from './images/alphabetical-sort.svg'
 import AlphabeticalSortReverse from './images/alphabetical-sort-reverse.svg'
+import Search from './images/search.svg'
 
-import axios from 'axios'
+import { Content, ContentButton, ContentCard, ContentInput, ContentInputImage, ContentSort } from './styles/PokemonStyles';
 
-export type TypePokemonTypes = {
-  slot: number;
-  type: {
-    name: string;
-    url: string;
-  }
-}
-
-type TypePokemonBoxes = {
-  value: string;
-  label: string;
-}
-
-type TypePokemon = {
-  data: {
-    name: string;
-    url: string;
-  }
-}
-
-type PokemonType = {
-  data: {
-    id: number;
-    name: string;
-    types: TypePokemonTypes[];
-    sprites: {
-      front_default: string;
-    }
-  }
-}
+import { PokemonType, TypePokemon, TypePokemonBoxes } from './@types/pokemon';
+import { PokemonSortType } from './components/PokemonSortType';
+import { PokemonList } from './components/PokemonList';
+import { PokemonSortSearch } from './components/PokemonSortSearch';
 
 export function App() {
   const [pokemon, setPokemon] = useState<PokemonType[]>([]);
-  const [pokemonsSort, setPokemonsSort] = useState<PokemonType[]>([]);
-  const [pokemonsSortReverse, setPokemonsSortReverse] = useState<PokemonType[]>([]);
   const [allPokemons, setAllPokemons] = useState<PokemonType[]>([]);
   const [pokemonType, setPokemonType] = useState<TypePokemon[]>([]);
   const [typePokemon, setTypePokemon] = useState<TypePokemonBoxes[]>([]);
@@ -53,12 +27,13 @@ export function App() {
   const [previousUrl, setPreviousUrl] = useState('');
 
   const [valueSearch, setValueSearch] = useState('');
+  const [sendValueSearch, setSendValueSearch] = useState('')
 
   const [loading, setLoading] = useState(true);
   const [sort, setSort] = useState(false);
   const [sortReverse, setSortReverse] = useState(false);
   const [sortType, setSortType] = useState(false);
-  const [buttonState, setButtonState] = useState(false);
+  const [sortSearch, setSortSearch] = useState(false)
   const [count, setCount] = useState(1);
 
   const initialUrlApi = 'https://pokeapi.co/api/v2/pokemon?limit=25&offset=0'
@@ -79,7 +54,7 @@ export function App() {
     fetchApi()
   }, []);
 
-  async function savePokemons(previous: [{ url: string }], actionType: String) {
+  async function savePokemons(previous: [{ url: string }], actionType: string) {
     let _pokemon: PokemonType[] = await Promise.all(previous.map(async pokemon => {
       let pokemonRegister = await axios.get(pokemon.url)
       return pokemonRegister
@@ -87,8 +62,6 @@ export function App() {
 
     if (actionType === '') {
       setPokemon(_pokemon)
-      setPokemonsSort(pokemonSort(_pokemon))
-      setPokemonsSortReverse(pokemonSort(_pokemon).reverse())
     } else if (actionType === 'all') {
       setAllPokemons(_pokemon)
     } else if (actionType === 'types') {
@@ -99,6 +72,23 @@ export function App() {
 
       setPokemonType(_pokemon)
     }
+  }
+
+  async function handleSubmitForm(event: FormEvent) {
+    event.preventDefault();
+
+    if (valueSearch.trim().length > 0) {
+      setLoading(true)
+      await loadAllPokemons()
+      console.log('foi')
+      setLoading(false)
+      setSortSearch(true)
+      console.log(loading)
+    } else {
+      setSortSearch(false)
+    }
+
+    setSendValueSearch(valueSearch)
   }
 
   const nextPage = async () => {
@@ -128,16 +118,15 @@ export function App() {
     }
   }
 
-  function compareStrings(a: string, b: string) {
-    return (a < b) ? -1 : (a > b) ? 1 : 0;
-  }
+  const onChange: (value: []) => void = selectedOptions => {
+    if (selectedOptions.length > 0) {
+      setSortType(true);
+      setSortSearch(false)
+    } else {
+      setSortType(false)
+    }
 
-  function pokemonSort(pokemons: PokemonType[]) {
-    let _pokemons = pokemons.slice().sort(function (a, b) {
-      return compareStrings(a.data.name, b.data.name)
-    })
-
-    return _pokemons
+    setTypePokemon(selectedOptions)
   }
 
   const typesPokemons = pokemonType.map(type => {
@@ -147,118 +136,69 @@ export function App() {
     }
   })
 
-  const onChange: (value: []) => void = selectedOptions => {
-    if (selectedOptions.length > 0) {
-      setSortType(true);
-    } else {
-      setSortType(false)
-    }
-
-    setTypePokemon(selectedOptions)
-  }
-
   return (
     <Content>
-      <ContentSort>
-        <ReactMultiSelectCheckboxes onChange={onChange} placeholderButtonLabel="Selecione o(s) tipo(s)" options={typesPokemons} />
-        <ContentInput placeholder="Search..." type="text" onChange={event => setValueSearch(event.target.value)} />
-        <Button
-          sort
-          disabled={valueSearch.trim().length > 0 || sortType}
-          className={!sort && !sortReverse ? '' : 'disabled'}
-          onClick={() => {
-            setSort(!sort);
-            setCount(count + 1);
-            setSortReverse(sort);
-            if (count % 3 === 0) {
-              setSort(false)
-              setSortReverse(false)
-            }
-          }}><img src={sort ? AlphabeticalSort : sortReverse ? AlphabeticalSortReverse : AlphabeticalSort} alt="Ordem alfabética" /></Button>
-      </ContentSort>
+      {!loading ? (
+        <>
+          <ContentSort>
+            <ReactMultiSelectCheckboxes onChange={onChange} placeholderButtonLabel="Selecione o(s) tipo(s)" options={typesPokemons} />
+            <ContentInput onSubmit={handleSubmitForm}>
+              <input placeholder="Search..." type="text" onChange={event => setValueSearch(event.target.value)} />
+              <Button><ContentInputImage src={Search} alt="Buscar" /></Button>
+            </ContentInput>
+            <Button
+              sort
+              disabled={sortType || sortSearch}
+              className={!sort && !sortReverse ? '' : 'disabled'}
+              onClick={() => {
+                setSort(!sort);
+                setCount(count + 1);
+                setSortReverse(sort);
+                if (count % 3 === 0) {
+                  setSort(false)
+                  setSortReverse(false)
+                }
+              }}>
+              <img
+                src={sort ? AlphabeticalSort : sortReverse ? AlphabeticalSortReverse : AlphabeticalSort}
+                alt={sortReverse ? "Ordem alfabética decrescente" : sort ? "Ordem alfabética crescente" : "Ativar ordem alfabética crescente"}
+              />
+            </Button>
+          </ContentSort>
 
-      <ContentCard>
-        {!loading ? valueSearch.trim().length === 0 && !buttonState ? (
-          <>
+          <ContentCard>
             {
-              sort ? (
-                pokemonsSort.map(pokemon => {
-                  return (
-                    <Pokemon key={pokemon.data.id} name={pokemon.data.name} types={pokemon.data.types} sprites={pokemon.data.sprites.front_default} />
-                  )
-                })
-              ) : sortReverse ? (
-                pokemonsSortReverse.map(pokemon => {
-                  return (
-                    <Pokemon key={pokemon.data.id} name={pokemon.data.name} types={pokemon.data.types} sprites={pokemon.data.sprites.front_default} />
-                  )
-                })
-              ) : sortType ? (
-                loadAllPokemons(),
-                allPokemons.filter(value => {
-                  const typesPokemon = typePokemon.map(type => {
-                    return type.value
-                  })
-
-                  const typesAllPokemons = value.data.types.map(type => {
-                    return type.type.name
-                  })
-
-                  if (typesPokemon.length > 0) {
-                    let control = 0;
-
-                    for (var i = 0; i < typesPokemon.length; i++) {
-                      if (typesPokemon[i] === typesAllPokemons[i]) {
-                        control += 1;
-                      }
-                    }
-
-                    if (typesPokemon.length === control) {
-                      return value
-                    }
+              !sortSearch ? (
+                <>
+                  {
+                    sort ? (
+                      <PokemonSort pokemons={pokemon} />
+                    ) : sortReverse ? (
+                      <PokemonSortReverse pokemons={pokemon} />
+                    ) : sortType ? (
+                      <PokemonSortType pokemons={allPokemons} types={typePokemon} />
+                    ) : (
+                      <PokemonList pokemons={pokemon} />
+                    )
                   }
-
-                  return false
-                }).map(pokemon => {
-                  return (
-                    <Pokemon key={pokemon.data.id} name={pokemon.data.name} types={pokemon.data.types} sprites={pokemon.data.sprites.front_default} />
-                  )
-                })
+                </>
               ) : (
-                pokemon.map(pokemon => {
-                  return (
-                    <Pokemon key={pokemon.data.id} name={pokemon.data.name} types={pokemon.data.types} sprites={pokemon.data.sprites.front_default} />
-                  )
-                })
+                <PokemonSortSearch pokemons={allPokemons} valueSearch={sendValueSearch} />
               )
             }
-          </>
-        ) : (
-          allPokemons.filter(value => {
-            if (value.data.name.toLowerCase().includes(valueSearch.toLowerCase())) {
-              return value
-            }
-            return false
-          }).map(pokemon => {
-            return (
-              <Pokemon key={pokemon.data.id} name={pokemon.data.name} types={pokemon.data.types} sprites={pokemon.data.sprites.front_default} />
-            )
-          })
-        )
-          : <p>Loading...</p>}
-      </ContentCard>
-      {
-        !sortType && valueSearch.trim().length === 0 && (
-          <ContentButton>
-            <Button
-              next={false}
-              disabled={previousUrl === null ? true : false}
-              onClick={() => prevPage()}
-            >Previous</Button>
-            <Button disabled={nextUrl === null ? true : false} onClick={() => nextPage()}>Next</Button>
-          </ContentButton>
-        )
-      }
-    </Content >
+          </ContentCard>
+
+          {!sortType && !sortSearch && (
+            <ContentButton>
+              <Button
+                next={false}
+                disabled={previousUrl === null ? true : false}
+                onClick={() => prevPage()}
+              >Previous</Button>
+              <Button disabled={nextUrl === null ? true : false} onClick={() => nextPage()}>Next</Button>
+            </ContentButton>)}
+        </>
+      ) : <p>Loading...</p>}
+    </Content>
   )
 }
