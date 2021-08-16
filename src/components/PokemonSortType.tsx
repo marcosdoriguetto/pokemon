@@ -19,18 +19,12 @@ export function PokemonSortType({ pokemons, types }: TypePokemonSort) {
             return type.type.name
           })
 
-          if (typesPokemon.length > 0) {
-            let control = 0;
-
-            for (var i = 0; i < typesPokemon.length; i++) {
-              if (typesPokemon[i] === typesAllPokemons[i]) {
-                control += 1;
-              }
-            }
-
-            if (typesPokemon.length === control) {
-              return value
-            }
+          let control = 0;
+          for (var i = 0; i < typesPokemon.length; i++) {
+            typesAllPokemons.includes(typesPokemon[i]) && control++
+          }
+          if (typesPokemon.length === control) {
+            return value
           }
 
           return false

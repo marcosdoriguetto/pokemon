@@ -80,10 +80,8 @@ export function App() {
     if (valueSearch.trim().length > 0) {
       setLoading(true)
       await loadAllPokemons()
-      console.log('foi')
       setLoading(false)
       setSortSearch(true)
-      console.log(loading)
     } else {
       setSortSearch(false)
     }
@@ -138,34 +136,33 @@ export function App() {
 
   return (
     <Content>
+      <ContentSort>
+        <ReactMultiSelectCheckboxes onChange={onChange} placeholderButtonLabel="Selecione o(s) tipo(s)" options={typesPokemons} />
+        <ContentInput onSubmit={handleSubmitForm}>
+          <input placeholder="Search..." type="text" onChange={event => setValueSearch(event.target.value)} />
+          <Button><ContentInputImage src={Search} alt="Buscar" /></Button>
+        </ContentInput>
+        <Button
+          sort
+          disabled={sortType || sortSearch}
+          className={!sort && !sortReverse ? '' : 'disabled'}
+          onClick={() => {
+            setSort(!sort);
+            setCount(count + 1);
+            setSortReverse(sort);
+            if (count % 3 === 0) {
+              setSort(false)
+              setSortReverse(false)
+            }
+          }}>
+          <img
+            src={sort ? AlphabeticalSort : sortReverse ? AlphabeticalSortReverse : AlphabeticalSort}
+            alt={sortReverse ? "Ordem alfabética decrescente" : sort ? "Ordem alfabética crescente" : "Ativar ordem alfabética crescente"}
+          />
+        </Button>
+      </ContentSort>
       {!loading ? (
         <>
-          <ContentSort>
-            <ReactMultiSelectCheckboxes onChange={onChange} placeholderButtonLabel="Selecione o(s) tipo(s)" options={typesPokemons} />
-            <ContentInput onSubmit={handleSubmitForm}>
-              <input placeholder="Search..." type="text" onChange={event => setValueSearch(event.target.value)} />
-              <Button><ContentInputImage src={Search} alt="Buscar" /></Button>
-            </ContentInput>
-            <Button
-              sort
-              disabled={sortType || sortSearch}
-              className={!sort && !sortReverse ? '' : 'disabled'}
-              onClick={() => {
-                setSort(!sort);
-                setCount(count + 1);
-                setSortReverse(sort);
-                if (count % 3 === 0) {
-                  setSort(false)
-                  setSortReverse(false)
-                }
-              }}>
-              <img
-                src={sort ? AlphabeticalSort : sortReverse ? AlphabeticalSortReverse : AlphabeticalSort}
-                alt={sortReverse ? "Ordem alfabética decrescente" : sort ? "Ordem alfabética crescente" : "Ativar ordem alfabética crescente"}
-              />
-            </Button>
-          </ContentSort>
-
           <ContentCard>
             {
               !sortSearch ? (
@@ -176,6 +173,7 @@ export function App() {
                     ) : sortReverse ? (
                       <PokemonSortReverse pokemons={pokemon} />
                     ) : sortType ? (
+                      loadAllPokemons(),
                       <PokemonSortType pokemons={allPokemons} types={typePokemon} />
                     ) : (
                       <PokemonList pokemons={pokemon} />

@@ -6,7 +6,6 @@ export function PokemonList({ pokemons }: TypePokemonSort) {
     <>
       {
         pokemons.map(pokemon => {
-          console.log(pokemon)
           return (
             <Pokemon key={pokemon.data.id} name={pokemon.data.name} types={pokemon.data.types} sprites={pokemon.data.sprites.front_default} />
           )
