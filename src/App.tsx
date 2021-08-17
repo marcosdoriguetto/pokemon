@@ -89,6 +89,16 @@ export function App() {
     setSendValueSearch(valueSearch)
   }
 
+  const handleSortPokemons = () => {
+    setSort(!sort);
+    setCount(count + 1);
+    setSortReverse(sort);
+    if (count % 3 === 0) {
+      setSort(false)
+      setSortReverse(false)
+    }
+  }
+
   const nextPage = async () => {
     setLoading(true)
     let pokemonsNextPage = await axios.get(nextUrl)
@@ -137,24 +147,16 @@ export function App() {
   return (
     <Content>
       <ContentSort>
-        <ReactMultiSelectCheckboxes onChange={onChange} placeholderButtonLabel="Selecione o(s) tipo(s)" options={typesPokemons} />
+        {!loading && <ReactMultiSelectCheckboxes onChange={onChange} value={!sortSearch ? typePokemon : []} placeholderButtonLabel="Selecione o(s) tipo(s)" options={typesPokemons} />}
         <ContentInput onSubmit={handleSubmitForm}>
-          <input placeholder="Search..." type="text" onChange={event => setValueSearch(event.target.value)} />
-          <Button><ContentInputImage src={Search} alt="Buscar" /></Button>
+          <input disabled={loading} placeholder="Search..." type="text" onChange={event => setValueSearch(event.target.value)} />
+          <Button disabled={loading}><ContentInputImage src={Search} alt="Buscar" /></Button>
         </ContentInput>
         <Button
           sort
           disabled={sortType || sortSearch}
           className={!sort && !sortReverse ? '' : 'disabled'}
-          onClick={() => {
-            setSort(!sort);
-            setCount(count + 1);
-            setSortReverse(sort);
-            if (count % 3 === 0) {
-              setSort(false)
-              setSortReverse(false)
-            }
-          }}>
+          onClick={() => handleSortPokemons()}>
           <img
             src={sort ? AlphabeticalSort : sortReverse ? AlphabeticalSortReverse : AlphabeticalSort}
             alt={sortReverse ? "Ordem alfabética decrescente" : sort ? "Ordem alfabética crescente" : "Ativar ordem alfabética crescente"}

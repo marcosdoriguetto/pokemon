@@ -56,11 +56,17 @@ export const ContentInput = styled.form`
   }
 
   button {
+    border: 2px solid var(--secondary);
+    border-left: 0;
     border-radius: 0 4px 4px 0;
     padding-block: 5px;
     width: 36px;
     position: absolute;
   }
+
+  input:disabled, button:disabled {
+      border-color: var(--textColor);
+    }
 `
 
 export const ContentInputImage = styled.img`
