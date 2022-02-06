@@ -140,11 +140,6 @@ export const InfoTypes = styled.div`
   align-items: center;
   justify-content: center;
   gap: 10px;
-
-  img {
-    width: 32px;
-    height: 32px;
-  }
 `
 
 export const InfoType = styled.div`
@@ -152,6 +147,24 @@ export const InfoType = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 10px;
+`
+
+export const Info = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background-color: #FFFFFF;
+  border-radius: 4px;
+  padding: 5px;
+
+  p {
+    font-size: 12px;
+  }
+
+  img {
+    width: 14px;
+    height: 14px;
+  }
 `
 
 export const ContentTypesOrganization = styled.div`

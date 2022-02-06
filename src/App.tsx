@@ -42,6 +42,14 @@ export function App() {
 
   useEffect(() => {
     async function fetchApi() {
+      const allPokemons = axios.get('https://www.pokemon.com/us/api/pokedex/kalos');
+      console.log(allPokemons);
+    }
+    fetchApi()
+  }, []);
+
+  useEffect(() => {
+    async function fetchApi() {
       let getPokemonsPage = await axios.get(initialUrlApi);
       let getAllTypesPokemons = await axios.get(initialPokemonTypes);
 
@@ -128,8 +136,11 @@ export function App() {
 
   const onChange: (value: []) => void = selectedOptions => {
     if (selectedOptions.length > 0) {
-      setSortType(true);
+      setSortType(true)
       setSortSearch(false)
+      setSort(false)
+      setSortReverse(false)
+      setCount(1)
     } else {
       setSortType(false)
     }

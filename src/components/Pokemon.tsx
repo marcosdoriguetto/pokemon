@@ -1,6 +1,6 @@
 
 import { TypePokemonTypes } from '../@types/pokemon'
-import { ContentInfo, ContentPokemon, ImagePokemon, InfoType, InfoTypes } from '../styles/PokemonStyles'
+import { ContentInfo, ContentPokemon, ImagePokemon, Info, InfoType, InfoTypes } from '../styles/PokemonStyles'
 
 type PokemonType = {
   name: string;
@@ -20,7 +20,10 @@ export function Pokemon({ name, types, sprites }: PokemonType) {
           <InfoType>
             {types.map(type => {
               return (
-                <img key={type.slot} src={`types/${type.type.name}.png`} alt={type.type.name} />
+                <Info key={type.slot}>
+                  <img key={type.slot} src={`types/${type.type.name}.png`} alt={type.type.name} />
+                  <p>{type.type.name.charAt(0).toUpperCase() + type.type.name.slice(1)}</p>
+                </Info>
               )
             })}
           </InfoType>
